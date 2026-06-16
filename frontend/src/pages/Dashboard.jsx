@@ -1,11 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-
   const navigate = useNavigate();
 
   const logout = () => {
-
     localStorage.removeItem("token");
 
     navigate("/login");
@@ -13,13 +11,13 @@ function Dashboard() {
 
   return (
     <div>
-
       <h1>Dashboard</h1>
+
+      <p>Welcome User!</p>
 
       <button onClick={logout}>
         Logout
       </button>
-
     </div>
   );
 }
