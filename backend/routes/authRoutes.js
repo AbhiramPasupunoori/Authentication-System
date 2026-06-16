@@ -3,7 +3,8 @@ import express from "express";
 import {
     register,
     login
-} from "/Users/abhiram/Desktop/Authentication-System/backend/controllers/authControllers.js";
+} 
+from "/Users/abhiram/Desktop/Authentication-System/backend/controllers/authControllers.js";
 
 import authMiddleware from "/Users/abhiram/Desktop/Authentication-System/backend/middleware/authMiddleware.js";
 
