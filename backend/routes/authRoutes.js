@@ -14,16 +14,27 @@ router.post("/register", register);
 
 router.post("/login", login);
 
-router.get(
-    "/profile",
-    authMiddleware,
-    (req, res) => {
+import User from "../models/User.js";
 
-        res.json({
-            message: "Protected Route Accessed",
-            user: req.user
-        });
+router.get(
+  "/profile",
+  authMiddleware,
+  async (req, res) => {
+    try {
+
+      const user = await User.findById(
+        req.user.id
+      ).select("-password");
+
+      res.json(user);
+
+    } catch (error) {
+
+      res.status(500).json({
+        message: error.message
+      });
     }
+  }
 );
 
 export default router;
