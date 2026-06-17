@@ -6,19 +6,23 @@ export const register = async (req, res) => {
 
     console.log("Register route hit");
     console.log(req.body);
-    
+
     try {
+
         const { name, email, password } = req.body;
 
-        // Check if fields exist
         if (!name || !email || !password) {
             return res.status(400).json({
                 message: "All fields are required"
             });
         }
 
-        // Check if email exists
+        // DEBUG LOGS
+        console.log("Checking existing user...");
+
         const existingUser = await User.findOne({ email });
+
+        console.log("Existing User:", existingUser);
 
         if (existingUser) {
             return res.status(400).json({
@@ -26,34 +30,46 @@ export const register = async (req, res) => {
             });
         }
 
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        console.log("Hashing password...");
 
-        // Save user
+        const hashedPassword = await bcrypt.hash(
+            password,
+            10
+        );
+
+        console.log("Creating user...");
+
         const user = await User.create({
             name,
             email,
             password: hashedPassword
         });
 
+        console.log("User created:", user);
+
         res.status(201).json({
             message: "Registration Successful"
         });
 
     } catch (error) {
+
+        console.log("REGISTER ERROR:", error);
+
         res.status(500).json({
             message: error.message
         });
     }
 };
+
 export const login = async (req, res) => {
-    try{
 
-        const{ email, password } = req.body;
+    try {
 
-        const user = await User.findOne({ email});
+        const { email, password } = req.body;
 
-        if(!user) {
+        const user = await User.findOne({ email });
+
+        if (!user) {
             return res.status(400).json({
                 message: "Invalid Credentials"
             });
@@ -64,7 +80,7 @@ export const login = async (req, res) => {
             user.password
         );
 
-        if(!isMatch) {
+        if (!isMatch) {
             return res.status(400).json({
                 message: "Invalid Credentials"
             });
@@ -79,7 +95,7 @@ export const login = async (req, res) => {
                 expiresIn: "7d"
             }
         );
-        
+
         res.status(200).json({
             token,
             user: {
@@ -88,8 +104,8 @@ export const login = async (req, res) => {
             }
         });
 
-    }   
-    catch (error) {
+    } catch (error) {
+
         res.status(500).json({
             message: error.message
         });
