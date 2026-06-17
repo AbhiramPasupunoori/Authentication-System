@@ -12,6 +12,16 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!email || !password) {
+      return alert("Please fill all fields");
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      return alert("Invalid email");
+    }
+
     try {
 
       const res = await axios.post(
